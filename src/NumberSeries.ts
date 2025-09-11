@@ -1,9 +1,9 @@
 export type BaseOp = "sum" | "multiplier" | "mode" | "print";
 
-class NumberSeries {
-    // Attribútumok, tulajdonságok (osztály változói) rejtettek-private
-    protected _count: number; // Hány szám legyen a listában.
-    protected _v: number; // A generált számok felső határa.
+export class NumberSeries {
+    // Attribútumok, tulajdonságok (osztály változói) rejtettek-private (encapsulation)
+    private _count: number; // Hány szám legyen a listában.
+    private _v: number; // A generált számok felső határa.
     protected _list: number[]; // a számok listája itt lesz.
 
     // Konstruktor - létrehozza az objektumot: inicializálja az attribútumokat:
@@ -28,7 +28,7 @@ class NumberSeries {
     // Szetter: kontrolláltan adok értéket a propertynek
     set values(arr: number[]) {
         if (arr.length === 0) throw new Error("Nem lehet üres a lista!");
-        if (!arr.every(n=> Number.isFinite(n) && n > 0)) throw new Error("Minden elem pozitív egész legyen!");
+        if (!arr.every(n=> Number.isFinite(n) && n > 0)) throw new Error("MInden elem pozitív egész legyen!");
         
         this._list = [...arr]; // A array elemeinek a másolata kerül a _list-be! Ez egy új array lesz.
         this._count = arr.length;
@@ -60,7 +60,7 @@ class NumberSeries {
     multiplier() {return this._list.reduce((acc, n)=> acc*n, 1)}
 
     // Router (switch-case): sum, multiplier, mode, print
-    run(op: BaseOp) {
+    run(op: BaseOp): void {
         switch(op) {
             case "sum":
                 console.log(`Összeg: ${this.sum()}`);
@@ -88,18 +88,8 @@ class NumberSeries {
     static rand(max: number): number {
         return Math.floor(Math.random()* max) +1;
     }
+
 }
 
 
-//Statikus metodusok (osztalyhoz tartoznak):
-NumberSeries.help();
-console.log(NumberSeries.rand(8));
 
-//példányozitas:
-const n = new NumberSeries(30,8)
-console.log(n.run("print"));
-console.log(n.values);
-n.values =[1000,100,100,100,1,2,3]
-console.log(n.run("print"));
-n.values=[-3,10]
-console.log(n.run("print"));
